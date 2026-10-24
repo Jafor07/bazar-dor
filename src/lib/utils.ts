@@ -1,3 +1,5 @@
+export const API_BASE = "https://api.api-store.workers.dev/api/bazardor";
+
 /* ---------- Types ---------- */
 
 export interface Product {
@@ -83,3 +85,11 @@ export function getBanglaDate(date: Date = new Date()): string {
   const month = banglaMonths[bd.getUTCMonth()];
   return `${day}, ${toBengaliNumber(bd.getUTCDate())} ${month}, ${toBengaliNumber(bd.getUTCFullYear())}`;
 }
+
+/* ---------- Price change styling ---------- */
+
+export const changeStyle = {
+  up: { symbol: "▲", text: "text-red-600" },
+  down: { symbol: "▼", text: "text-green-600" },
+  flat: { symbol: "—", text: "text-gray-500" },
+} as const;

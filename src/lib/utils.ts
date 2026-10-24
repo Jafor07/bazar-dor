@@ -89,7 +89,7 @@ export function getBanglaDate(date: Date = new Date()): string {
 /* ---------- Price change styling ---------- */
 
 export const changeStyle = {
-  up: { symbol: "▲", text: "text-red-600" },
-  down: { symbol: "▼", text: "text-green-600" },
-  flat: { symbol: "—", text: "text-gray-500" },
+  up: { symbol: "▲", text: "text-red-600", badge: "bg-red-50 text-red-600" },
+  down: { symbol: "▼", text: "text-green-600", badge: "bg-green-50 text-green-700" },
+  flat: { symbol: "—", text: "text-gray-500", badge: "bg-gray-100 text-gray-600" },
 } as const;

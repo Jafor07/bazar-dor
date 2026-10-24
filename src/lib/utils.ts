@@ -1,0 +1,85 @@
+/* ---------- Types ---------- */
+
+export interface Product {
+  id: number;
+  slug: string;
+  nameBn: string;
+  category: string;
+  categoryNameBn: string;
+  categoryIcon: string;
+  unit: string;
+  image: string;
+  today: number;
+  yesterday: number;
+  lastWeek: number;
+  lastMonth: number;
+  change: {
+    dir: "up" | "down" | "flat";
+    pct: number;
+  };
+  markets: {
+    market: string;
+    division: string;
+    min: number;
+    max: number;
+  }[];
+}
+
+export interface Category {
+  id: string;
+  slug: string;
+  nameBn: string;
+  icon: string;
+}
+
+/* ---------- Number helpers ---------- */
+
+const bengaliDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+
+export function toBengaliNumber(num: number | string): string {
+  return String(num).replace(/[0-9]/g, (d) => bengaliDigits[Number(d)]);
+}
+
+export function formatPrice(price: number): string {
+  return toBengaliNumber(price.toLocaleString("en-IN"));
+}
+
+// 2.6 -> "২.৬", -2.9 -> "২.৯" (the ▲/▼ arrow already shows direction)
+export function formatPercent(pct: number): string {
+  return toBengaliNumber(Math.abs(pct).toFixed(1));
+}
+
+/* ---------- Units ---------- */
+
+const unitMap: Record<string, string> = {
+  kg: "প্রতি কেজি",
+  litre: "প্রতি লিটার",
+  dozen: "প্রতি ডজন",
+  piece: "প্রতি পিস",
+};
+
+export function getUnitBn(unit: string): string {
+  return unitMap[unit] ?? `প্রতি ${unit}`;
+}
+
+// "প্রতি কেজি" -> "কেজি" (for the ticker: ১৪৮ টাকা/কেজি)
+export function getUnitShortBn(unit: string): string {
+  return getUnitBn(unit).replace("প্রতি ", "");
+}
+
+/* ---------- Date ---------- */
+
+const banglaDays = ["রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার"];
+const banglaMonths = [
+  "জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন",
+  "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর",
+];
+
+export function getBanglaDate(date: Date = new Date()): string {
+  // Bangladesh is UTC+6 with no daylight saving. Shifting by 6h and reading the
+  // UTC fields gives the same date on the server (UTC) and in the browser.
+  const bd = new Date(date.getTime() + 6 * 60 * 60 * 1000);
+  const day = banglaDays[bd.getUTCDay()];
+  const month = banglaMonths[bd.getUTCMonth()];
+  return `${day}, ${toBengaliNumber(bd.getUTCDate())} ${month}, ${toBengaliNumber(bd.getUTCFullYear())}`;
+}

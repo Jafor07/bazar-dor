@@ -1,3 +1,9 @@
+import { formatPrice, getBanglaDate, getUnitBn } from "@/lib/utils";
+
 export default function Home() {
-  return <button className="btn bg-brand text-white m-8">বাজার দর ✅</button>;
+  return (
+    <p className="p-8">
+      {getBanglaDate()} | {formatPrice(1850)} টাকা {getUnitBn("kg")}
+    </p>
+  );
 }

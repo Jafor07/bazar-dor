@@ -93,3 +93,37 @@ export const changeStyle = {
   down: { symbol: "▼", text: "text-green-600", badge: "bg-green-50 text-green-700" },
   flat: { symbol: "—", text: "text-gray-500", badge: "bg-gray-100 text-gray-600" },
 } as const;
+
+/* ---------- Category page helpers ---------- */
+
+export type SortOption = "default" | "price-asc" | "price-desc";
+
+export function sortProducts(products: Product[], sortBy: SortOption): Product[] {
+  const sorted = [...products]; // copy first, never mutate React state
+  if (sortBy === "price-asc") sorted.sort((a, b) => a.today - b.today);
+  if (sortBy === "price-desc") sorted.sort((a, b) => b.today - a.today);
+  return sorted;
+}
+
+export async function fetchCategoryPage(
+  slug: string
+): Promise<{ products: Product[]; category: Category | null }> {
+  // both requests run at the same time
+  const [productsRes, categoryRes] = await Promise.all([
+    fetch(`${API_BASE}/products?category=${encodeURIComponent(slug)}`),
+    fetch(`${API_BASE}/categories/${encodeURIComponent(slug)}`),
+  ]);
+
+  const productsData: unknown = productsRes.ok ? await productsRes.json() : [];
+  const products = Array.isArray(productsData) ? (productsData as Product[]) : [];
+
+  let category: Category | null = null;
+  if (categoryRes.ok) {
+    const data: unknown = await categoryRes.json();
+    if (data && typeof data === "object" && "nameBn" in data) {
+      category = data as Category;
+    }
+  }
+
+  return { products, category };
+}

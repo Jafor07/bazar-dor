@@ -13,10 +13,15 @@ if (process.env.NODE_ENV !== "production") {
 
 const db = client.db("bazardor");
 
-
 export const auth = betterAuth({
   database: mongodbAdapter(db, { client }),
   emailAndPassword: { enabled: true },
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ["google", "github"],
+    },
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,

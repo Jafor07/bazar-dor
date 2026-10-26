@@ -149,3 +149,14 @@ export function getAuthErrorBn(
 ): string {
   return (error?.code && authErrorsBn[error.code]) || fallback;
 }
+
+export function getOAuthErrorBn(code: string): string {
+  switch (code) {
+    case "account_not_linked":
+      return "এই ইমেইল দিয়ে আগেই অন্যভাবে অ্যাকাউন্ট খোলা হয়েছে। প্রথমবার যেভাবে সাইন আপ করেছিলেন, সেভাবেই সাইন ইন করুন।";
+    case "access_denied":
+      return "সাইন ইন বাতিল করা হয়েছে।";
+    default:
+      return "সাইন ইন ব্যর্থ হয়েছে, আবার চেষ্টা করুন।";
+  }
+}

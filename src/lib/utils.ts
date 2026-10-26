@@ -127,3 +127,25 @@ export async function fetchCategoryPage(
 
   return { products, category };
 }
+export function getSafeCallbackUrl(raw: string | null | undefined): string {
+  if (raw && raw.startsWith("/") && !raw.startsWith("//")) return raw;
+  return "/";
+}
+
+const authErrorsBn: Record<string, string> = {
+  INVALID_EMAIL_OR_PASSWORD: "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে",
+  USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL: "এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে",
+  USER_ALREADY_EXISTS: "এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে",
+  PASSWORD_TOO_SHORT: "পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে",
+  PASSWORD_TOO_LONG: "পাসওয়ার্ডটি অনেক বড় হয়ে গেছে",
+  INVALID_EMAIL: "সঠিক ইমেইল ঠিকানা দিন",
+  VALIDATION_ERROR: "দেওয়া তথ্য সঠিক নয়, আবার চেষ্টা করুন",
+};
+
+// BetterAuth errors are English; show a Bangla message instead.
+export function getAuthErrorBn(
+  error: { code?: string } | null | undefined,
+  fallback: string
+): string {
+  return (error?.code && authErrorsBn[error.code]) || fallback;
+}

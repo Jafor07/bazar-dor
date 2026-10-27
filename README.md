@@ -3,7 +3,7 @@
 A Bangla grocery price tracker. See today's prices of rice, lentils, oil, vegetables,
 fish, meat, eggs & dairy and spices, market by market, with daily price changes.
 
-🔗 **Live site:** https://bazar-dor-bc28.vercel.app/
+🔗 **Live site:** https://bazar-dor-theta-ebon.vercel.app/
 📦 **Repository:** https://github.com/Jafor07/bazar-dor
 
 ## Features

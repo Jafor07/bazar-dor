@@ -27,11 +27,10 @@ export default function SignUpForm({ callbackUrl }: { callbackUrl: string }) {
     setLoading(true);
     try {
       const { error } = await signUp.email({ name, email, password });
-      if (error) 
-        {console.error("sign-up error:", error);
+      if (error) {
         toast.error(getAuthErrorBn(error, "রেজিস্ট্রেশন ব্যর্থ!"), { id: "auth-error" });
-            return;
-        }
+        return;
+      }
       // BetterAuth signs the new user in automatically
       toast.success("রেজিস্ট্রেশন সফল! 🎉");
       router.push(callbackUrl);

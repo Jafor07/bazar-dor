@@ -127,6 +127,24 @@ export async function fetchCategoryPage(
 
   return { products, category };
 }
+
+/* ---------- Product details helpers ---------- */
+
+// 63.5 -> "৬৩.৫০", 62 -> "৬২" (market averages can end in .5)
+export function formatAvgPrice(price: number): string {
+  if (Number.isInteger(price)) return formatPrice(price);
+  return toBengaliNumber(
+    price.toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+  );
+}
+
+/* ---------- Auth helpers ---------- */
+
+// Only allow redirects to pages inside this site ("/product/rice"),
+// never to another website ("https://evil.com" or "//evil.com").
 export function getSafeCallbackUrl(raw: string | null | undefined): string {
   if (raw && raw.startsWith("/") && !raw.startsWith("//")) return raw;
   return "/";
@@ -150,6 +168,8 @@ export function getAuthErrorBn(
   return (error?.code && authErrorsBn[error.code]) || fallback;
 }
 
+// Errors that come back in the address bar after a Google / GitHub login
+// (/signin?error=account_not_linked)
 export function getOAuthErrorBn(code: string): string {
   switch (code) {
     case "account_not_linked":

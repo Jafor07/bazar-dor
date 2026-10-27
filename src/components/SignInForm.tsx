@@ -20,7 +20,7 @@ export default function SignInForm({ callbackUrl }: { callbackUrl: string }) {
     try {
       const { error } = await signIn.email({ email, password });
       if (error) {
-        toast.error(getAuthErrorBn(error, "সাইন ইন ব্যর্থ!"));
+        toast.error(getAuthErrorBn(error, "সাইন ইন ব্যর্থ!"), { id: "auth-error" });
         return;
       }
       toast.success("সাইন ইন সফল! 🎉");
